@@ -36,6 +36,19 @@ class EventController extends Controller
     }
 
     $events = $query
+        ->with('category')
+        ->orderBy('date', 'asc')
+        ->paginate(12);
+
+    return view('events.index', compact('events'));
+}
+
+public function category(Category $category)
+{
+    $events = $category->events()
+        ->where('status', 'active')
+        ->where('visibility', 'public')
+        ->with('category')
         ->orderBy('date', 'asc')
         ->paginate(12);
 
@@ -45,6 +58,7 @@ class EventController extends Controller
 public function show(Event $event)
 {
     $event->load([
+        'category',
         'eventArtists.artist',
         'images',
         'ticketTypes'
@@ -119,7 +133,17 @@ public function private($token)
         ->where('status', 'active')
         ->firstOrFail();
 
-    return view('events.show', compact('event'));
+    $event->load('category');
+
+    $relatedEvents = Event::where('category_id', $event->category_id)
+        ->where('id', '!=', $event->id)
+        ->where('status', 'active')
+        ->where('visibility', 'public')
+        ->with('category')
+        ->limit(3)
+        ->get();
+
+    return view('events.show', compact('event', 'relatedEvents'));
 }
 
 }

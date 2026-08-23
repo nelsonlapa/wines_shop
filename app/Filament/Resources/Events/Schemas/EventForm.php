@@ -22,7 +22,7 @@ class EventForm
     {
        return $schema->components([
 
-    Tabs::make('Criar Evento')
+    Tabs::make('Gerir Produto')
         ->tabs([
 
             // TAB 1
@@ -34,20 +34,23 @@ class EventForm
                         ->schema([
 
                             TextInput::make('title')
+                                ->label('Nome do vinho')
                                 ->required(),
 
                             FileUpload::make('image')
-                                ->label('Cartaz do Evento')
+                                ->label('Imagem do produto')
                                 ->image()
                                 ->disk('public')
                                 ->directory('events')
                                 ->imagePreviewHeight('200'),
 
                             Textarea::make('description')
+                                ->label('Descrição e notas de prova')
                                 ->required()
                                 ->columnSpanFull(),
 
                             DateTimePicker::make('date')
+                                ->label('Data de entrada no catálogo')
                                 ->required(),
 
                             Select::make('category_id')
@@ -79,15 +82,15 @@ class EventForm
                 ]),
 
             // TAB 2
-            Tab::make('Localização')
+            Tab::make('Origem e localização')
                 ->icon('heroicon-o-map-pin')
                 ->schema([
 
-                    Section::make('Localização')
+                    Section::make('Origem, produtor e entrega')
                         ->schema([
 
                             Pinpoint::make('map')
-                                ->label('Localização')
+                                ->label('Região de origem')
                                 ->defaultLocation(41.1579, -8.6291)
                                 ->defaultZoom(15)
                                 ->height(500)
@@ -108,40 +111,42 @@ class EventForm
                 ]),
 
             // TAB 3
-            Tab::make('Bilhetes')
-                ->icon('heroicon-o-ticket')
+            Tab::make('Preço e stock')
+                ->icon('heroicon-o-shopping-bag')
                 ->schema([
 
                     Section::make('Configuração')
                         ->schema([
 
                             Toggle::make('has_seats')
-                                ->label('Tem lugares marcados?')
+                                ->label('Produto com variantes/lotes?')
                                 ->live(),
 
                             TextInput::make('capacity')
+                                ->label('Stock total')
                                 ->numeric()
                                 ->required(),
 
                             TextInput::make('price')
+                                ->label('Preço por garrafa')
                                 ->numeric()
                                 ->default(0)
                                 ->prefix('€'),
 
                             TextInput::make('rows')
-                                ->label('Número de filas')
+                                ->label('Número de lotes')
                                 ->numeric()
                                 ->visible(fn ($get) => $get('has_seats')),
 
                             TextInput::make('seats_per_row')
-                                ->label('Lugares por fila')
+                                ->label('Unidades por lote')
                                 ->numeric()
                                 ->visible(fn ($get) => $get('has_seats')),
 
                         ])
                         ->columns(2),
 
-                    Section::make('Tipos de Bilhete')
+                    Section::make('Formatos e preços')
                         ->schema([
 
                             Repeater::make('ticketTypes')
@@ -149,6 +154,7 @@ class EventForm
                                 ->schema([
 
                                     TextInput::make('name')
+                                        ->label('Formato / lote')
                                         ->required(),
 
                                     TextInput::make('price')
@@ -157,6 +163,7 @@ class EventForm
                                         ->prefix('€'),
 
                                     TextInput::make('quantity')
+                                        ->label('Stock disponível')
                                         ->numeric()
                                         ->required(),
 
@@ -169,11 +176,11 @@ class EventForm
                 ]),
 
             // TAB 4
-            Tab::make('Artistas')
-                ->icon('heroicon-o-musical-note')
+            Tab::make('Produtor')
+                ->icon('heroicon-o-building-storefront')
                 ->schema([
 
-                    Section::make('Artistas')
+                    Section::make('Produtor / quinta')
                         ->schema([
 
                             Repeater::make('eventArtists')
@@ -186,7 +193,7 @@ class EventForm
                                         ->required(),
 
                                     Toggle::make('is_headliner')
-                                        ->label('Cabeça de cartaz'),
+                                        ->label('Produtor principal'),
 
                                 ])
                                 ->columns(2),
@@ -196,11 +203,11 @@ class EventForm
                 ]),
 
             // TAB 5
-            Tab::make('Galeria')
+            Tab::make('Galeria do produto')
                 ->icon('heroicon-o-photo')
                 ->schema([
 
-                    Section::make('Galeria do Evento')
+                    Section::make('Fotografias da garrafa e quinta')
                         ->schema([
 
                             Repeater::make('images')
@@ -220,15 +227,15 @@ class EventForm
                 ]),
 
             // TAB 6
-            Tab::make('Staff')
+            Tab::make('Equipa da loja')
                 ->icon('heroicon-o-users')
                 ->schema([
 
-                    Section::make('Staff do Evento')
+                    Section::make('Equipa responsável')
                         ->schema([
 
                             Select::make('staff')
-                                ->label('Membros Staff')
+                                ->label('Membros da equipa')
                                 ->multiple()
                                 ->relationship(
                                     'staff',
@@ -249,21 +256,21 @@ class EventForm
                 ->icon('heroicon-o-cog-6-tooth')
                 ->schema([
 
-                    Section::make('Estado')
+                    Section::make('Publicação do produto')
                         ->schema([
 
                             Select::make('visibility')
                                 ->options([
                                     'public' => 'Público',
-                                    'private' => 'Privado',
+                                    'private' => 'Acesso reservado',
                                 ])
                                 ->default('public'),
 
                             Select::make('status')
                                 ->options([
-                                    'draft' => 'Draft',
-                                    'active' => 'Active',
-                                    'cancelled' => 'Cancelled',
+                                    'draft' => 'Rascunho',
+                                    'active' => 'Disponível',
+                                    'cancelled' => 'Indisponível',
                                 ])
                                 ->default('draft'),
 

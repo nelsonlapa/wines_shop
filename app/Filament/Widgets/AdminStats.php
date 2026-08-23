@@ -30,16 +30,16 @@ class AdminStats extends StatsOverviewWidget
             });
 
         return [
-            Stat::make('Eventos', $totalEventos)
-                ->description('Total de eventos criados')
+            Stat::make('Produtos', $totalEventos)
+                ->description('Total de vinhos no catálogo')
                 ->color('primary'),
 
-            Stat::make('Participantes', $totalParticipantes)
-                ->description('Utilizadores registados como participantes')
+            Stat::make('Clientes', $totalParticipantes)
+                ->description('Clientes registados na loja')
                 ->color('success'),
 
-            Stat::make('Organizadores', $totalOrganizadores)
-                ->description('Utilizadores organizadores')
+            Stat::make('Produtores', $totalOrganizadores)
+                ->description('Utilizadores que gerem produtos')
                 ->color('warning'),
 
             Stat::make('Vendas (€)', number_format($totalVendas, 2))

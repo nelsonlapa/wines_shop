@@ -12,22 +12,22 @@ class RegistrationForm
         return $schema
             ->components([
                 Select::make('user_id')
-                    ->label('User')
+                    ->label('Cliente')
                     ->relationship('user', 'name')
                     ->searchable()
                     ->required(),
 
                 Select::make('event_id')
-                    ->label('Event')
+                    ->label('Produto')
                     ->relationship('event', 'title')
                     ->searchable()
                     ->required(),
 
                 Select::make('status')
                     ->options([
-                        'pending' => 'Pending',
-                        'confirmed' => 'Confirmed',
-                        'cancelled' => 'Cancelled',
+                        'pending' => 'Pendente',
+                        'confirmed' => 'Confirmada',
+                        'cancelled' => 'Cancelada',
                     ])
                     ->default('pending')
                     ->required(),

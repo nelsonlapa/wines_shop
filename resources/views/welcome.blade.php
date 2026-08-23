@@ -1,105 +1,64 @@
 @extends('layouts.app')
 
 @section('fullwidth')
-    <section class="relative h-[800px] flex items-center justify-center text-white mb-24 overflow-hidden">
-
-        <!-- IMAGEM -->
-        <img src="{{ asset('images/hero.jpg') }}" class="absolute inset-0 w-full h-full object-cover scale-110 ">
-
-
-
-
-        <!-- CONTEÚDO -->
-        <div class="relative z-10 text-center px-4">
-
-            <!-- CONTAINER BLUR -->
-            <div class="backdrop-blur-md bg-white/10 border border-white/10 rounded-3xl p-10 max-w-4xl mx-auto shadow-2xl">
-
-                <h1 class="text-5xl font-bold mb-4 text-white">
-                    OS MELHORES EVENTOS ESTÃO AQUI.
-                </h1>
-
-                <p class="text-lg mb-6 max-w-2xl mx-auto text-white/80">
-                    Encontre e garanta já o seu bilhete para os concertos,
-                    festivais, jogos e espetáculos imperdíveis em Portugal
-                </p>
-
-                <!-- SEARCH -->
-                <form action="{{ route('events.index') }}" method="GET"
-                    class="max-w-3xl mx-auto flex items-center bg-white/90 rounded-xl shadow-lg overflow-hidden">
-
-                    <!-- SEARCH -->
-                    <div class="flex items-center flex-1 px-4">
-                        <span class="text-gray-400 mr-2">🔎</span>
-
-                        <input type="text" name="search" placeholder="Pesquisar eventos..."
-                            class="w-full outline-none text-gray-800 bg-transparent py-4">
-                    </div>
-
-                    <!-- DIVIDER -->
-                    <div class="w-px h-8 bg-gray-200"></div>
-
-                    <!-- LOCATION -->
-                    <div class="flex items-center px-4">
-                        <span class="text-gray-400 mr-2">📍</span>
-
-                        <input type="text" name="location" placeholder="Lisboa, Portugal"
-                            class="w-40 outline-none text-gray-800 bg-transparent">
-                    </div>
-
-                    <!-- BUTTON -->
-                    <button class="bg-blue-600 text-white px-6 py-4 hover:bg-blue-700 transition">
-                        Pesquisar
-                    </button>
-
+    <section class="relative min-h-[680px] flex items-center text-white overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=2200&q=85" class="absolute inset-0 w-full h-full object-cover" alt="Vinhas e uma garrafa de vinho">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#281014]/95 via-[#42151d]/75 to-transparent"></div>
+        <div class="relative z-10 max-w-7xl mx-auto w-full px-6 pt-24 pb-24">
+            <div class="max-w-2xl">
+                <p class="wine-kicker mb-5">Vinhos com origem</p>
+                <h1 class="font-serif text-5xl md:text-7xl leading-tight mb-6">Uma boa história começa sempre com um vinho.</h1>
+                <p class="text-lg text-white/80 max-w-lg mb-9">Rótulos portugueses escolhidos à mão, do Douro ao Alentejo, para tornar cada encontro memorável.</p>
+                <form action="{{ route('events.index') }}" method="GET" class="max-w-xl flex bg-white rounded-lg overflow-hidden shadow-2xl">
+                    <input type="text" name="search" placeholder="Procure por casta, região ou estilo" class="min-w-0 flex-1 px-5 py-4 text-stone-800 outline-none">
+                    <button class="wine-button px-6 py-4 font-semibold">Explorar</button>
                 </form>
-
             </div>
-
         </div>
-
     </section>
 @endsection
 
 @section('content')
-    <section class="relative -mt-64 z-20">
-        <p class="text-5xl font-bold mb-4">
-            Em Destaque
-        </p>
+    <section class="relative z-20 -mt-12">
+        <div class="flex items-end justify-between mb-7">
+            <div><p class="wine-kicker mb-2">A seleção da semana</p><h2 class="font-serif text-4xl text-stone-900">Garrafas em destaque</h2></div>
+            <a href="{{ route('events.index') }}" class="hidden sm:block text-sm font-semibold text-[#5b1820]">Ver toda a coleção <span aria-hidden="true">→</span></a>
+        </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
             @forelse($events as $event)
                 <div
-                    class="relative group bg-white rounded-2xl shadow-xl hover:shadow-2xl transition transform hover:-translate-y-1 overflow-hidden">
+                    class="relative group bg-white border border-stone-200 hover:shadow-xl transition overflow-hidden">
 
                     <!-- LINK -->
                     <a href="{{ route('events.show', $event) }}" class="absolute inset-0 z-10"></a>
 
                     @if ($event->image)
-                        <img src="{{ asset('storage/' . $event->image) }}" class="w-full h-48 object-cover">
+                        <img src="{{ $event->image ? asset('storage/' . $event->image) : 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80' }}" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500" alt="{{ $event->title }}">
                     @endif
 
                     <div class="p-5 relative z-20">
 
-                        <h3 class="text-xl font-bold mb-2 text-gray-900">
+                        <p class="wine-kicker mb-2">Seleção Vinha</p>
+                        <h3 class="font-serif text-xl font-bold mb-2 text-gray-900">
                             {{ $event->title }}
                         </h3>
 
                         <p class="text-gray-500 text-sm mb-1">
-                            📅 {{ $event->date->format('d/m/Y H:i') }}
+                            {{ $event->category->name ?? 'Vinho português' }}
                         </p>
 
                         <p class="text-gray-500 text-sm mb-3">
-                            📍 {{ $event->city ?? 'Local a definir' }}
+                            {{ $event->city ?? 'Portugal' }}
                         </p>
 
-                        <p class="font-bold text-blue-600 mb-4">
-                            {{ $event->price == 0 ? 'Gratuito' : '€ ' . $event->price }}
+                        <p class="font-bold text-[#5b1820] mb-4">
+                            {{ $event->price == 0 ? '€ 12,50' : '€ ' . number_format($event->price, 2, ',', '.') }} <span class="font-normal text-xs text-stone-500">/ garrafa</span>
                         </p>
 
                         <a href="{{ route('events.show', $event) }}"
-                            class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 relative z-30">
-                            {{ $event->price == 0 ? 'Inscrever-me' : 'Comprar Bilhete' }}
+                            class="block text-center wine-button py-3 rounded-lg relative z-30">
+                            Adicionar à seleção
 
                         </a>
 
@@ -108,7 +67,7 @@
                 </div>
 
             @empty
-                <p>Não existem eventos disponíveis.</p>
+                <p>Não existem vinhos disponíveis.</p>
             @endforelse
 
         </div>
@@ -125,14 +84,15 @@
                 <!-- ===================== -->
                 <div>
 
-                    <h2 class="text-2xl font-bold mb-6 text-gray-900">
-                        Categorias Populares
+                    <p class="wine-kicker mb-2">Descubra o seu estilo</p>
+                    <h2 class="font-serif text-3xl mb-6 text-gray-900">
+                        Escolha por ocasião
                     </h2>
 
                     <div class="grid grid-cols-2 gap-3">
 
                         @foreach ($categories as $category)
-                            <a href="#" class="relative rounded-xl overflow-hidden shadow hover:shadow-lg transition">
+                            <a href="{{ route('events.category', $category) }}" class="relative overflow-hidden shadow hover:shadow-lg transition">
 
                                 <img src="{{ asset('storage/' . $category->image) }}" class="w-full h-24 object-cover">
 
@@ -155,8 +115,9 @@
                 <!-- ===================== -->
                 <div>
 
-                    <h2 class="text-2xl font-bold mb-6 text-gray-900">
-                        Novidades & Recomendados
+                    <p class="wine-kicker mb-2">Notas da casa</p>
+                    <h2 class="font-serif text-3xl mb-6 text-gray-900">
+                        Novidades na adega
                     </h2>
 
                     <div class="space-y-4">
@@ -167,7 +128,7 @@
 
                                 <!-- IMG -->
                                 @if ($event->image)
-                                    <img src="{{ asset('storage/' . $event->image) }}" class="w-24 h-24 object-cover">
+                                    <img src="{{ $event->image ? asset('storage/' . $event->image) : 'https://images.unsplash.com/photo-1473973266408-ed4e27abdd47?auto=format&fit=crop&w=300&q=80' }}" class="w-24 h-24 object-cover">
                                 @endif
 
                                 <!-- INFO -->
@@ -178,15 +139,11 @@
                                     </h3>
 
                                     <p class="text-sm text-gray-500">
-                                        📅 {{ $event->date->format('d/m') }}
+                                        {{ $event->category->name ?? 'Vinho português' }}
                                     </p>
 
-                                    <p class="text-sm font-bold text-blue-600">
-                                        @if ($event->price == 0)
-                                            Gratuito
-                                        @else
-                                            € {{ $event->price }}
-                                        @endif
+                                    <p class="text-sm font-bold text-[#5b1820]">
+                                        € {{ $event->price == 0 ? '12,50' : number_format($event->price, 2, ',', '.') }}
                                     </p>
 
                                 </div>

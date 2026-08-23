@@ -14,13 +14,16 @@ class CategoryForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('Nome da categoria')
                     ->required(),
 
                 Textarea::make('description')
+                    ->label('Descrição da categoria')
                     ->default(null)
                     ->columnSpanFull(),
 
                 FileUpload::make('image')
+                    ->label('Imagem da categoria')
                     ->image()
                     ->directory('images/categories') // vai para storage/app/public/images/categories
                     ->disk('public')

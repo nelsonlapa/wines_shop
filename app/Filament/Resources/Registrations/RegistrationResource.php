@@ -25,6 +25,8 @@ class RegistrationResource extends Resource
     protected static string|UnitEnum|null $navigationGroup = 'Gestão';
     protected static ?string $recordTitleAttribute = 'id';
     protected static ?string $navigationLabel = 'Inscrições';
+    protected static ?string $modelLabel = 'Encomenda';
+    protected static ?string $pluralModelLabel = 'Encomendas';
 
     public static function form(Schema $schema): Schema
     {

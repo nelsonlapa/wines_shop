@@ -15,6 +15,7 @@ class CategoriesTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Categoria de vinho')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()

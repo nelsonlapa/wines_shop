@@ -15,21 +15,25 @@ class EventsTable
         return $table
             ->columns([
                 TextColumn::make('title')
+                    ->label('Produto')
                     ->searchable(),
                     ImageColumn::make('image')
-    ->label('Poster')
+    ->label('Imagem do produto')
     ->getStateUsing(fn ($record) => asset('storage/' . $record->image))
     ->square(),
                 TextColumn::make('date')
+                    ->label('Disponível desde')
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('location')
+                    ->label('Região / origem')
                     ->searchable(),
                 TextColumn::make('price')
+                    ->label('Preço')
                     ->money()
                     ->sortable(),
                 TextColumn::make('capacity')
-    ->label('Inscrições')
+    ->label('Stock')
     ->formatStateUsing(function ($record) {
         $count = $record->registrations()->count();
         return $count . ' / ' . $record->capacity;
@@ -43,7 +47,7 @@ class EventsTable
                 TextColumn::make('status')
                     ->badge(),
                 TextColumn::make('organizer.name')
-    ->label('Organizador')
+    ->label('Produtor')
     ->searchable()
     ->sortable(),
 
@@ -60,7 +64,7 @@ TextColumn::make('category.name')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('visibility')
-    ->label('Link')
+    ->label('Visibilidade')
     ->badge()
     ->formatStateUsing(function ($record) {
         return $record->visibility === 'private'

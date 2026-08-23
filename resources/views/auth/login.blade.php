@@ -7,7 +7,7 @@
             </h1>
 
             <p class="mt-2 text-sm text-gray-600">
-                Acede à tua área pessoal para gerir inscrições, bilhetes e eventos.
+                Acede à tua área pessoal para acompanhar as tuas encomendas e favoritos.
             </p>
         </div>
 

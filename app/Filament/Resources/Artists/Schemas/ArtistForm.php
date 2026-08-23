@@ -14,12 +14,12 @@ class ArtistForm
             ->components([
 
                 TextInput::make('name')
-                    ->label('Nome do Artista')
+                    ->label('Nome do produtor / quinta')
                     ->required()
                     ->maxLength(255),
 
                 FileUpload::make('image')
-                    ->label('Imagem do Artista')
+                    ->label('Imagem do produtor / quinta')
                     ->image()
                     ->disk('public')
                     ->directory('artists')

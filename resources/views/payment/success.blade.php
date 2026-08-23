@@ -15,7 +15,7 @@
     </h1>
 
     <p class="text-gray-600 mb-6">
-        Olá <strong>{{ $registration->user->name }}</strong>, o teu bilhete para o evento <strong>{{ $registration->event->title }}</strong> já está disponível.
+        Olá <strong>{{ $registration->user->name }}</strong>, a tua encomenda de <strong>{{ $registration->event->title }}</strong> foi confirmada.
     </p>
 
     <div class="bg-gray-50 p-6 rounded-lg inline-block border border-dashed border-gray-300 mb-6">
@@ -30,7 +30,7 @@
 
     <div class="flex flex-col gap-3">
         <a href="{{ route('registrations.my') }}" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-purple-700 transition">
-            Ir para Meus Bilhetes 🎫
+            Ver as minhas encomendas
         </a>
         <a href="{{ route('events.index') }}" class="text-gray-500 hover:text-gray-700 text-sm">
             Voltar à página inicial

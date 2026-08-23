@@ -1,6 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Sacramento&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --wine: #5b1820;
+    --wine-deep: #351016;
+    --cream: #f7f1e8;
+    --ink: #261d1b;
+    --gold: #c9953f;
+}
+
+body.wine-site {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+}
+
+.wine-nav { background: rgba(43, 15, 19, .72); border: 1px solid rgba(255,255,255,.2); border-radius: 999px; backdrop-filter: blur(14px); }
+.brand-mark { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; }
+.brand-script { font-family: 'Sacramento', cursive; font-size: 2.25rem; font-weight: 400; }
+.wine-footer { background: var(--wine-deep); }
+.wine-button { background: var(--wine); color: white; }
+.wine-button:hover { background: #771f2a; }
+.wine-kicker { color: var(--gold); letter-spacing: .18em; text-transform: uppercase; font-size: .7rem; font-weight: 700; }
 
 /* Chrome, Edge, Safari */
 html::-webkit-scrollbar {

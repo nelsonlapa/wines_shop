@@ -17,9 +17,9 @@ use UnitEnum;
 class ArtistResource extends Resource
 {
     protected static ?string $model = Artist::class;
-    protected static ?string $navigationLabel = 'Artistas';
-    protected static ?string $modelLabel = 'Artista';
-    protected static ?string $pluralModelLabel = 'Artistas';
+    protected static ?string $navigationLabel = 'Produtores';
+    protected static ?string $modelLabel = 'Produtor';
+    protected static ?string $pluralModelLabel = 'Produtores';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
     protected static string|UnitEnum|null $navigationGroup = 'Gestão';
     protected static ?string $recordTitleAttribute = 'name';

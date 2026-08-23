@@ -26,9 +26,9 @@ class EventResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
     protected static string|UnitEnum|null $navigationGroup = 'Gestão';
     protected static ?string $recordTitleAttribute = 'title';
-    protected static ?string $navigationLabel = 'Eventos';
-    protected static ?string $modelLabel = 'Evento';
-    protected static ?string $pluralModelLabel = 'Eventos';
+    protected static ?string $navigationLabel = 'Produtos';
+    protected static ?string $modelLabel = 'Produto';
+    protected static ?string $pluralModelLabel = 'Produtos';
     public static function form(Schema $schema): Schema
     {
         return EventForm::configure($schema);

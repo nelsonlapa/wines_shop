@@ -22,9 +22,9 @@ class CategoryResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 protected static string|UnitEnum|null $navigationGroup = 'Gestão';
     protected static ?string $recordTitleAttribute = 'name';
-protected static ?string $navigationLabel = 'Categorias';
-protected static ?string $modelLabel = 'Categoria';
-protected static ?string $pluralModelLabel = 'Categorias';
+protected static ?string $navigationLabel = 'Categorias de vinho';
+protected static ?string $modelLabel = 'Categoria de vinho';
+protected static ?string $pluralModelLabel = 'Categorias de vinho';
     public static function form(Schema $schema): Schema
     {
         return CategoryForm::configure($schema);

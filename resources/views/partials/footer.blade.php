@@ -1,70 +1,30 @@
-<footer class="bg-gray-900 text-gray-300 mt-20">
-
+<footer class="wine-footer text-stone-300 mt-20">
     <div class="container mx-auto px-6 py-12">
-
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-
-            <!-- LOGO -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-                <h2 class="text-xl font-bold text-white mb-4">
-                    <span class="text-blue-500">Event</span><span class="text-purple-500">Manager</span>
-                </h2>
-
-                <p class="text-sm text-gray-400">
-                    Descobre e participa nos melhores eventos em Portugal.
-                    Concertos, festivais, desporto e muito mais.
-                </p>
+                <h2 class="text-xl font-bold text-white mb-4"><span class="brand-script text-amber-200">Vinha</span><span class="text-stone-100"> & Companhia</span></h2>
+                <p class="text-sm text-stone-400">Garrafas com história, escolhidas para a sua mesa. Descubra o melhor de Portugal em cada gole.</p>
             </div>
-
-            <!-- LINKS -->
-            <div>
-                <h3 class="text-white font-semibold mb-4">Links</h3>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-white">Eventos</a></li>
-                    <li><a href="#" class="hover:text-white">Categorias</a></li>
-                    <li><a href="#" class="hover:text-white">Sobre nós</a></li>
-                    <li><a href="#" class="hover:text-white">Blog</a></li>
-                </ul>
-            </div>
-
-            <!-- CATEGORIAS -->
             <div>
                 <h3 class="text-white font-semibold mb-4">Categorias</h3>
                 <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-white">Concertos</a></li>
-                    <li><a href="#" class="hover:text-white">Desporto</a></li>
-                    <li><a href="#" class="hover:text-white">Teatro</a></li>
-                    <li><a href="#" class="hover:text-white">Festivais</a></li>
+                    @forelse ($footerCategories as $category)
+                        <li><a href="{{ route('events.category', $category) }}" class="hover:text-white">{{ $category->name }}</a></li>
+                    @empty
+                        <li class="text-stone-500">Sem categorias disponíveis</li>
+                    @endforelse
                 </ul>
             </div>
-
-            <!-- CONTACTO -->
             <div>
                 <h3 class="text-white font-semibold mb-4">Contacto</h3>
-
-                <p class="text-sm text-gray-400">📍 Porto, Portugal</p>
-                <p class="text-sm text-gray-400 mt-2">✉️ suporte@eventmanager.pt</p>
-                <p class="text-sm text-gray-400 mt-2">📞 +351 900 000 000</p>
-
+                <p class="text-sm text-stone-400">Porto, Portugal</p>
+                <p class="text-sm text-stone-400 mt-2">hello@vinha.pt</p>
+                <p class="text-sm text-stone-400 mt-2">+351 220 000 000</p>
             </div>
-
         </div>
-
-        <!-- BOTTOM -->
-        <div class="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
-
-            <p class="text-sm text-gray-500">
-                © {{ date('Y') }} EventManager. Todos os direitos reservados.
-            </p>
-
-            <div class="flex space-x-4 mt-4 md:mt-0">
-                <a href="#" class="hover:text-white">Facebook</a>
-                <a href="#" class="hover:text-white">Instagram</a>
-                <a href="#" class="hover:text-white">Twitter</a>
-            </div>
-
+        <div class="border-t border-stone-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
+            <p class="text-sm text-stone-500">© {{ date('Y') }} Vinha & Companhia. Beba com moderação.</p>
+            <div class="flex space-x-4 mt-4 md:mt-0"><a href="#" class="hover:text-white">Instagram</a><a href="#" class="hover:text-white">Facebook</a></div>
         </div>
-
     </div>
-
 </footer>

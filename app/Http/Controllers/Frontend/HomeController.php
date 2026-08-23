@@ -12,6 +12,7 @@ class HomeController extends Controller
     {
         $events = Event::where('status', 'active')
             ->where('visibility', 'public')
+            ->with('category')
             ->orderBy('date', 'asc')
             ->take(8)
             ->get();

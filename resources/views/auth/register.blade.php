@@ -7,7 +7,7 @@
             </h1>
 
             <p class="mt-2 text-sm text-gray-600">
-                Regista-te para comprar bilhetes, gerir inscrições e aceder aos teus QR Codes.
+                Cria a tua conta para comprar vinhos e acompanhar as tuas encomendas.
             </p>
         </div>
 

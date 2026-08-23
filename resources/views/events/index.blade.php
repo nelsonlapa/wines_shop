@@ -1,141 +1,46 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="min-h-screen bg-gray-100 py-10">
-
-    <div class="max-w-7xl mx-auto px-6">
-
-        <!-- TOPO -->
-        <div class="mb-8">
-
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">
-                Explorar Eventos
-            </h1>
-
-            <!-- SEARCH BAR -->
-            <form action="{{ route('events.index') }}"
-                  method="GET"
-                  class="bg-white rounded-xl shadow flex items-center overflow-hidden">
-
-                <!-- SEARCH -->
-                <div class="flex items-center flex-1 px-4">
-                    <span class="text-gray-400 mr-2">🔎</span>
-
-                    <input
-                        type="text"
-                        name="search"
-                        value="{{ request('search') }}"
-                        placeholder="Pesquisar eventos..."
-                        class="w-full py-4 outline-none bg-transparent"
-                    >
-                </div>
-
-                <!-- DIVIDER -->
-                <div class="w-px h-8 bg-gray-200"></div>
-
-                <!-- LOCATION -->
-                <div class="flex items-center px-4">
-                    <span class="text-gray-400 mr-2">📍</span>
-
-                    <input
-                        type="text"
-                        name="location"
-                        value="{{ request('location') }}"
-                        placeholder="Lisboa, Portugal"
-                        class="w-40 outline-none bg-transparent"
-                    >
-                </div>
-
-                <!-- BUTTON -->
-                <button class="bg-blue-600 text-white px-6 py-4 hover:bg-blue-700 transition">
-                    Pesquisar
-                </button>
-
-            </form>
-
+<div class="py-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-10">
+        <div>
+            <p class="wine-kicker mb-2">A nossa coleção</p>
+            <h1 class="font-serif text-5xl text-stone-900">Vinhos para guardar na memória</h1>
+            <p class="text-stone-500 mt-3">{{ $events->total() }} rótulos selecionados para a sua mesa.</p>
         </div>
-
-        <!-- RESULTADOS -->
-        <div class="mb-6 flex items-center justify-between">
-
-            <p class="text-gray-500">
-                {{ $events->total() }} eventos encontrados
-            </p>
-
-        </div>
-
-        <!-- GRID -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            @forelse($events as $event)
-
-                <div class="relative bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden group">
-
-                    <!-- LINK CARD -->
-                    <a href="{{ route('events.show', $event) }}"
-                       class="absolute inset-0 z-10"></a>
-
-                    <!-- IMAGE -->
-                    <img src="{{ asset('storage/' . $event->image) }}"
-                         class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
-
-                    <!-- CONTENT -->
-                    <div class="p-4">
-
-                        <h2 class="font-bold text-lg text-gray-900 mb-2">
-                            {{ $event->title }}
-                        </h2>
-
-                        <p class="text-sm text-gray-500 mb-1">
-                            📅 {{ $event->date->format('d/m/Y H:i') }}
-                        </p>
-
-                        <p class="text-sm text-gray-500 mb-3">
-                            📍 {{ $event->city }}
-                        </p>
-
-                        <div class="flex items-center justify-between">
-
-                            <p class="font-bold text-blue-600">
-                                @if($event->price == 0)
-                                    Gratuito
-                                @else
-                                    € {{ $event->price }}
-                                @endif
-                            </p>
-
-                            <span class="text-sm text-blue-600 font-medium">
-                                Comprar →
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            @empty
-
-                <div class="col-span-full text-center py-20">
-
-                    <p class="text-gray-500 text-lg">
-                        Nenhum evento encontrado.
-                    </p>
-
-                </div>
-
-            @endforelse
-
-        </div>
-
-        <!-- PAGINAÇÃO -->
-        <div class="mt-10">
-            {{ $events->withQueryString()->links() }}
-        </div>
-
+        <form action="{{ route('events.index') }}" method="GET" class="flex w-full md:w-auto border border-stone-300 bg-white rounded-lg overflow-hidden">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Pesquisar vinhos" class="w-full md:w-64 px-4 py-3 outline-none text-sm">
+            <button class="wine-button px-5 text-sm font-semibold">Pesquisar</button>
+        </form>
     </div>
 
-</div>
+    <div class="flex flex-wrap gap-2 mb-8">
+        <a href="{{ route('events.index') }}" class="px-4 py-2 rounded-full border text-sm {{ request()->routeIs('events.index') && !request('search') ? 'bg-[#5b1820] text-white border-[#5b1820]' : 'bg-white border-stone-300 text-stone-700 hover:border-[#5b1820]' }}">Todos</a>
+        @foreach ($footerCategories as $category)
+            <a href="{{ route('events.category', $category) }}" class="px-4 py-2 rounded-full border text-sm bg-white border-stone-300 text-stone-700 hover:border-[#5b1820]">{{ $category->name }}</a>
+        @endforeach
+    </div>
 
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        @forelse($events as $event)
+            <article class="bg-white border border-stone-200 group overflow-hidden hover:shadow-xl transition">
+                <a href="{{ route('events.show', $event) }}" class="block overflow-hidden">
+                    <img src="{{ $event->image ? asset('storage/' . $event->image) : 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=900&q=80' }}" class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition duration-500" alt="{{ $event->title }}">
+                </a>
+                <div class="p-5">
+                    <p class="wine-kicker mb-2">{{ $event->category->name ?? 'Vinho português' }}</p>
+                    <h2 class="font-serif text-2xl text-stone-900 mb-1">{{ $event->title }}</h2>
+                    <p class="text-sm text-stone-500 mb-4">{{ $event->city ?? 'Portugal' }} · Colheita selecionada</p>
+                    <div class="flex items-center justify-between gap-3">
+                        <p class="text-lg font-bold text-[#5b1820]">€ {{ $event->price == 0 ? '12,50' : number_format($event->price, 2, ',', '.') }}</p>
+                        <a href="{{ route('events.show', $event) }}" class="wine-button px-4 py-2 rounded text-sm font-semibold">Ver vinho</a>
+                    </div>
+                </div>
+            </article>
+        @empty
+            <div class="col-span-full bg-white border border-stone-200 p-12 text-center text-stone-500">Não encontrámos vinhos com esse perfil.</div>
+        @endforelse
+    </div>
+    <div class="mt-10">{{ $events->withQueryString()->links() }}</div>
+</div>
 @endsection

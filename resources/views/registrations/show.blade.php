@@ -5,11 +5,11 @@
 <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-xl p-8 text-center">
 
     <h1 class="text-3xl font-bold text-green-600 mb-4">
-        Inscrição confirmada
+        Encomenda confirmada
     </h1>
 
     <p class="text-gray-600 mb-6">
-        A sua inscrição no evento foi realizada com sucesso.
+        A sua encomenda foi realizada com sucesso.
     </p>
 
     <h2 class="text-xl font-bold mb-2">
@@ -45,7 +45,7 @@
     <div class="mt-8">
         <a href="{{ route('registrations.my') }}"
            class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
-            Ver todas as minhas inscrições
+            Ver as minhas encomendas
         </a>
     </div>
 

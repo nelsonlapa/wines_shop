@@ -3,13 +3,13 @@
 @section('content')
 
 <h1 class="text-3xl font-bold mb-8">
-    Minhas Inscrições
+    As minhas encomendas
 </h1>
 
 @if($registrationsByEvent->isEmpty())
 
 <p class="text-gray-600">
-    Ainda não tem inscrições.
+    Ainda não tem encomendas.
 </p>
 
 @else
@@ -75,12 +75,12 @@
                             <div class="flex flex-col gap-3">
                                 <a href="{{ route('registrations.show', $registration) }}"
                                    class="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 text-center">
-                                    Ver Bilhete
+                                    Ver encomenda
                                 </a>
 
                                 <a href="{{ route('events.show', $registration->event) }}"
                                    class="bg-yellow-500 text-white px-5 py-3 rounded-lg hover:bg-yellow-600 text-center">
-                                    Ver Evento
+                                    Ver produto
                                 </a>
                             </div>
 

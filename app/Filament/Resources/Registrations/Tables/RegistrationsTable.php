@@ -21,7 +21,7 @@ class RegistrationsTable
                     ->sortable(),
 
                 TextColumn::make('event.title')
-                    ->label('Evento')
+                    ->label('Produto')
                     ->searchable()
                     ->sortable(),
 
@@ -40,7 +40,7 @@ class RegistrationsTable
             ])
             ->groups([
                 Group::make('event_id')
-                    ->label('Evento')
+                    ->label('Produto')
                     ->getTitleFromRecordUsing(fn ($record) => $record->event?->title ?? 'Evento removido')
                     ->collapsible(),
             ])
