@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Vinha & Companhia | Vinhos com origem</title>
+    <title>Aroma Nobre | Vinhos com origem</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -20,7 +20,7 @@
     <main class="flex-1">
         @yield('fullwidth')
 
-        <div class="container mx-auto px-6 py-8">
+        <div class="container mx-auto px-6 py-8 pt-24 md:pt-28">
             @yield('content')
         </div>
     </main>

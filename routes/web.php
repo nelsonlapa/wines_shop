@@ -9,6 +9,7 @@ use App\Http\Middleware\EnsureUserCanValidateCheckin;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\CartController;
 
 // webhook
 Route::post('/webhook/stripe', [WebhookController::class, 'handleStripe'])->name('webhook.stripe');
@@ -22,11 +23,23 @@ Route::get('/categorias/{category}', [EventController::class, 'category'])
 Route::get('/convite/{token}',[EventController::class, 'private'])
     ->name('events.private');
 
+Route::get('/catalogo', [EventController::class, 'index'])
+    ->name('catalog.index');
+
 Route::get('/events', [EventController::class, 'index'])
     ->name('events.index');
 
 Route::get('/events/{event}', [EventController::class, 'show'])
     ->name('events.show');
+
+Route::get('/carrinho', [CartController::class, 'index'])
+    ->name('cart.index');
+
+Route::post('/carrinho/{event}', [CartController::class, 'add'])
+    ->name('cart.add');
+
+Route::delete('/carrinho/{event}', [CartController::class, 'remove'])
+    ->name('cart.remove');
 
 Route::get('/checkin/{token}', [CheckinController::class, 'check'])
     ->middleware(['auth','checkin.validator'])

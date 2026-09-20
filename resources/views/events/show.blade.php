@@ -36,7 +36,10 @@
                     <button type="submit" class="wine-button w-full py-4 rounded-lg font-semibold">Adicionar à seleção</button>
                 </form>
             @else
-                <a href="{{ route('checkout', ['event_id' => $event->id]) }}" class="wine-button block w-full py-4 rounded-lg text-center font-semibold">Comprar esta garrafa</a>
+                <form action="{{ route('cart.add', $event) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="wine-button block w-full py-4 rounded-lg text-center font-semibold">Adicionar ao carrinho</button>
+                </form>
             @endif
             <p class="text-xs text-stone-500 text-center mt-3">Pagamento seguro · Envio para todo o Portugal continental</p>
         </div>

@@ -39,7 +39,7 @@
 
                     <div class="p-5 relative z-20">
 
-                        <p class="wine-kicker mb-2">Seleção Vinha</p>
+                        <p class="wine-kicker mb-2">Seleção Aroma Nobre</p>
                         <h3 class="font-serif text-xl font-bold mb-2 text-gray-900">
                             {{ $event->title }}
                         </h3>

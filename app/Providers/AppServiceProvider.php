@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer(['partials.navbar', 'partials.footer'], function ($view): void {
+        View::composer(['partials.navbar', 'partials.footer', 'events.index'], function ($view): void {
             $view->with('footerCategories', Category::query()
                 ->whereNotNull('name')
                 ->orderBy('name')

@@ -6,17 +6,14 @@
 
 
                 <a href="{{ route('home') }}" class="brand-mark text-white whitespace-nowrap">
-                    <span class="brand-script">Vinha</span><span class="text-amber-200"> & Companhia</span>
+                    <span class="brand-script">Aroma</span><span class="text-amber-200"> Nobre</span>
                 </a>
             </div>
 
             <div class="h-10 w-px bg-gray-200 hidden lg:block"></div>
 
             <div class="hidden lg:flex items-center gap-7 text-white/85 text-sm font-medium">
-                <a href="{{ route('events.index') }}" class="hover:text-amber-200 transition">Todos os vinhos</a>
-                @foreach ($footerCategories as $category)
-                    <a href="{{ route('events.category', $category) }}" class="hover:text-amber-200 transition">{{ $category->name }}</a>
-                @endforeach
+                <a href="{{ route('catalog.index') }}" class="hover:text-amber-200 transition">Catálogo</a>
             </div>
 
             <div class="h-10 w-px bg-gray-200 hidden xl:block"></div>
@@ -34,9 +31,9 @@
                         </a>
                     @endif
 
-                    <a href="{{ route('registrations.my') }}"
+                    <a href="{{ route('cart.index') }}"
                        class="inline-flex items-center gap-2 border border-amber-200 bg-amber-50 text-amber-800 px-4 py-2 rounded-full hover:bg-amber-100 transition font-semibold whitespace-nowrap">
-                        <span>Os meus pedidos</span>
+                        <span>Carrinho</span>
                     </a>
 
                     <div class="h-10 w-px bg-gray-200 hidden xl:block"></div>
