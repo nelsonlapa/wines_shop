@@ -37,32 +37,31 @@ class WebhookController extends Controller
             
             $session = $event->data->object;
             
-            if (isset($session->metadata->ticket_token)) {
-                
-                $ticketToken = $session->metadata->ticket_token;
-                
-                // Evita compra duplicada
-                $existingRegistration = Registration::where('ticket_token', $ticketToken)->first();
+            if (isset($session->metadata->purchase_items)) {
+                $user = User::find($session->metadata->user_id);
+                $purchaseItems = json_decode($session->metadata->purchase_items, true) ?? [];
+                $checkoutDetails = json_decode($session->metadata->checkout_details ?? '{}', true) ?? [];
 
-                if (!$existingRegistration) {
-                    
-                    $user = User::find($session->metadata->user_id);
-                    
-                    if ($user) {
-                        $registration = Registration::create([
-                            'user_id' => $session->metadata->user_id,
-                            'event_id' => $session->metadata->event_id,
-                            'status' => 'confirmed',
-                            'ticket_token' => $ticketToken,
-                            'checked_in' => false,
-                        ]);
+                if ($user) {
+                    foreach ($purchaseItems as $item) {
+                        $registration = Registration::firstOrCreate(
+                            ['ticket_token' => $item['ticket_token']],
+                            [
+                                'user_id' => $session->metadata->user_id,
+                                'event_id' => $item['event_id'],
+                                'status' => 'confirmed',
+                                'checked_in' => false,
+                                ...$checkoutDetails,
+                                'stripe_session_id' => $session->id,
+                            ],
+                        );
 
-                        // Envia o e-mail em background
-                        Mail::to($user->email)->send(new TicketPurchased($registration));
-                        Log::info('Stripe Webhook: Bilhete ' . $ticketToken . ' criado via webhook.');
+                        Log::info('Stripe Webhook: Venda #' . $registration->id . ' confirmada.');
                     }
-                } else {
-                    Log::info('Stripe Webhook: Bilhete ' . $ticketToken . ' ignorado (já existia).');
+
+                    if (isset($registration)) {
+                        Mail::to($user->email)->send(new TicketPurchased($registration->load('event', 'user')));
+                    }
                 }
             }
         }

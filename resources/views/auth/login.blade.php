@@ -2,16 +2,17 @@
     <div class="w-full max-w-md mx-auto">
 
         <div class="mb-8 text-center">
-            <h1 class="text-3xl font-bold text-gray-900">
+            <p class="wine-kicker mb-3">A sua adega pessoal</p>
+            <h1 class="font-serif text-4xl text-stone-900">
                 Entrar na conta
             </h1>
 
-            <p class="mt-2 text-sm text-gray-600">
+            <p class="mt-3 text-sm text-stone-500">
                 Acede à tua área pessoal para acompanhar as tuas encomendas e favoritos.
             </p>
         </div>
 
-        <div class="bg-white shadow-xl rounded-2xl p-8 border border-gray-100">
+        <div class="bg-white shadow-xl rounded-xl p-8 border border-stone-200">
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
             <form method="POST" action="{{ route('login') }}" class="space-y-5">
@@ -41,7 +42,7 @@
 
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}"
-                               class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                               class="text-sm font-semibold text-[#5b1820] hover:text-[#771f2a]">
                                 Esqueceu-se?
                             </a>
                         @endif
@@ -65,7 +66,7 @@
                         <input
                             id="remember_me"
                             type="checkbox"
-                            class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500"
+                            class="rounded border-stone-300 text-[#5b1820] shadow-sm focus:ring-[#5b1820]"
                             name="remember"
                         >
 
@@ -77,7 +78,7 @@
 
                 <button
                     type="submit"
-                    class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition"
+                    class="wine-button w-full py-3 px-4 rounded-lg font-semibold hover:bg-[#771f2a] focus:outline-none focus:ring-2 focus:ring-[#5b1820] focus:ring-offset-2 transition"
                 >
                     Entrar
                 </button>
@@ -85,11 +86,11 @@
 
             @if (Route::has('register'))
                 <div class="mt-6 text-center">
-                    <p class="text-sm text-gray-600">
+                    <p class="text-sm text-stone-500">
                         Ainda não tem conta?
 
                         <a href="{{ route('register') }}"
-                           class="font-semibold text-blue-600 hover:text-blue-800">
+                           class="font-semibold text-[#5b1820] hover:text-[#771f2a]">
                             Criar conta
                         </a>
                     </p>

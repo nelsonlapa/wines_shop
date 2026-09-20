@@ -3,13 +3,13 @@
 @section('content')
 
 <h1 class="text-3xl font-bold mb-8">
-    As minhas encomendas
+    As minhas compras
 </h1>
 
 @if($registrationsByEvent->isEmpty())
 
 <p class="text-gray-600">
-    Ainda não tem encomendas.
+    Ainda não tem compras.
 </p>
 
 @else
@@ -31,36 +31,22 @@
 
                         <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col md:flex-row items-center gap-6">
 
-                            <div class="bg-gray-100 p-4 rounded-lg text-center">
-                                <p class="text-sm text-gray-500 mb-2">
-                                    Meu QR Code
-                                </p>
-
-                                <img
-                                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode(route('checkin', $registration->ticket_token)) }}"
-                                    alt="QR Code da inscrição"
-                                    class="w-32 h-32"
-                                >
-                            </div>
-
                             <div class="flex-1">
                                 <h3 class="text-xl font-bold mb-2">
                                     {{ $registration->event->title }}
                                 </h3>
 
                                 <p class="text-gray-600">
-                                    Data: {{ $registration->event->date->format('d/m/Y H:i') }}
+                                    Compra: {{ $registration->created_at->format('d/m/Y H:i') }}
                                 </p>
 
                                 <p class="text-gray-600">
-                                    Local: {{ $registration->event->city }}
+                                    Total: {{ number_format($registration->event->sale_price, 2, ',', '.') }} €
                                 </p>
 
-                                @if($registration->seat)
-                                    <p class="text-gray-600">
-                                        Lugar: {{ $registration->seat->label }}
-                                    </p>
-                                @endif
+                                <p class="text-gray-500 text-sm mt-1">
+                                    Referência #{{ $registration->id }}
+                                </p>
 
                                 <div class="mt-3">
                                     <span class="px-3 py-1 rounded text-white
@@ -75,7 +61,7 @@
                             <div class="flex flex-col gap-3">
                                 <a href="{{ route('registrations.show', $registration) }}"
                                    class="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 text-center">
-                                    Ver encomenda
+                                    Ver recibo
                                 </a>
 
                                 <a href="{{ route('events.show', $registration->event) }}"

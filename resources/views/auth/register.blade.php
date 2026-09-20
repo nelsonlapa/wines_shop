@@ -2,16 +2,17 @@
     <div class="w-full max-w-lg mx-auto">
 
         <div class="mb-8 text-center">
-            <h1 class="text-3xl font-bold text-gray-900">
+            <p class="wine-kicker mb-3">Faça parte da nossa seleção</p>
+            <h1 class="font-serif text-4xl text-stone-900">
                 Criar conta
             </h1>
 
-            <p class="mt-2 text-sm text-gray-600">
+            <p class="mt-3 text-sm text-stone-500">
                 Cria a tua conta para comprar vinhos e acompanhar as tuas encomendas.
             </p>
         </div>
 
-        <div class="bg-white shadow-xl rounded-2xl p-8 border border-gray-100">
+        <div class="bg-white shadow-xl rounded-xl p-8 border border-stone-200">
             <form method="POST" action="{{ route('register') }}" class="space-y-5">
                 @csrf
 
@@ -51,29 +52,6 @@
                 </div>
 
                 <div>
-                    <x-input-label for="role_id" value="Tipo de utilizador" />
-
-                    <select
-                        id="role_id"
-                        name="role_id"
-                        class="block mt-2 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required
-                    >
-                        <option value="">
-                            Selecione o tipo de utilizador
-                        </option>
-
-                        @foreach ($roles as $role)
-                            <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
-                                {{ ucfirst($role->name) }}
-                            </option>
-                        @endforeach
-                    </select>
-
-                    <x-input-error :messages="$errors->get('role_id')" class="mt-2" />
-                </div>
-
-                <div>
                     <x-input-label for="password" value="Palavra-passe" />
 
                     <x-text-input
@@ -107,18 +85,18 @@
 
                 <button
                     type="submit"
-                    class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition"
+                    class="wine-button w-full py-3 px-4 rounded-lg font-semibold hover:bg-[#771f2a] focus:outline-none focus:ring-2 focus:ring-[#5b1820] focus:ring-offset-2 transition"
                 >
                     Criar conta
                 </button>
             </form>
 
             <div class="mt-6 text-center">
-                <p class="text-sm text-gray-600">
+                <p class="text-sm text-stone-500">
                     Já tem conta?
 
                     <a href="{{ route('login') }}"
-                       class="font-semibold text-blue-600 hover:text-blue-800">
+                       class="font-semibold text-[#5b1820] hover:text-[#771f2a]">
                         Entrar
                     </a>
                 </p>

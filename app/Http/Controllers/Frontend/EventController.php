@@ -17,30 +17,23 @@ class EventController extends Controller
         ->where('status', 'active')
         ->where('visibility', 'public');
 
-    // 🔎 PESQUISA
-    if ($request->search) {
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%')
+                    ->orWhere('description', 'like', '%' . $request->search . '%');
+            });
+        }
 
-        $query->where(function ($q) use ($request) {
-
-            $q->where('title', 'like', '%' . $request->search . '%')
-              ->orWhere('description', 'like', '%' . $request->search . '%');
-
-        });
-    }
-
-    // 📍 LOCALIZAÇÃO
-    if ($request->location) {
-
-        $query->where('city', 'like', '%' . $request->location . '%');
-
-    }
+        if ($request->location) {
+            $query->where('city', 'like', '%' . $request->location . '%');
+        }
 
     $events = $query
         ->with('category')
         ->orderBy('date', 'asc')
         ->paginate(12);
 
-    return view('events.index', compact('events'));
+        return view('events.index', compact('events'));
 }
 
 public function category(Category $category)

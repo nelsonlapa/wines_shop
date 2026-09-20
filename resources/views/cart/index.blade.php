@@ -30,6 +30,12 @@
                                 @if($product->discount_percentage > 0)<span class="text-stone-400 price-old mr-1">{{ number_format($product->price ?: 12.50, 2, ',', '.') }} €</span>@endif
                                 {{ number_format($product->sale_price, 2, ',', '.') }} €
                             </p>
+                            <form action="{{ route('cart.update', $product) }}" method="POST" class="mt-3 flex items-center gap-2">
+                                @csrf
+                                @method('PATCH')
+                                <label for="quantity-{{ $product->id }}" class="text-xs text-stone-500">Quantidade</label>
+                                <input id="quantity-{{ $product->id }}" type="number" name="quantity" min="1" max="99" value="{{ $quantities[$product->id] }}" onchange="this.form.submit()" class="w-20 rounded border-stone-300 px-2 py-1 text-sm">
+                            </form>
                         </div>
                         <form action="{{ route('cart.remove', $product) }}" method="POST">
                             @csrf
@@ -41,12 +47,8 @@
             </div>
             <aside class="bg-white border border-stone-200 p-6">
                 <h2 class="font-serif text-2xl mb-6">Resumo</h2>
-                <div class="flex justify-between border-b border-stone-200 pb-4 mb-5 text-stone-600"><span>{{ $products->count() }} artigo(s)</span><span>{{ number_format($total, 2, ',', '.') }} €</span></div>
-                @if ($products->count() === 1)
-                    <a href="{{ route('checkout', ['event_id' => $products->first()->id]) }}" class="wine-button block rounded-lg py-3 text-center font-semibold">Finalizar compra</a>
-                @else
-                    <p class="text-xs text-stone-500">Selecione uma garrafa de cada vez para finalizar o pagamento.</p>
-                @endif
+                <div class="flex justify-between border-b border-stone-200 pb-4 mb-5 text-stone-600"><span>{{ collect($quantities)->sum() }} artigo(s)</span><span>{{ number_format($total, 2, ',', '.') }} €</span></div>
+                <a href="{{ route('checkout') }}" class="wine-button block rounded-lg py-3 text-center font-semibold">Finalizar compra</a>
             </aside>
         </div>
     @endif

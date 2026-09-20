@@ -15,21 +15,18 @@ class TicketPurchased extends Mailable
 
     public $registration;
 
-    // Recebemos a inscrição quando chamamos o email
     public function __construct(Registration $registration)
     {
         $this->registration = $registration;
     }
 
-    // O Assunto do e-mail
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'O teu bilhete para ' . $this->registration->event->title,
+            subject: 'Compra confirmada | Aroma Nobre',
         );
     }
 
-    // O Ficheiro visual do e-mail
     public function content(): Content
     {
         return new Content(

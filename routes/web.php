@@ -38,6 +38,9 @@ Route::get('/carrinho', [CartController::class, 'index'])
 Route::post('/carrinho/{event}', [CartController::class, 'add'])
     ->name('cart.add');
 
+Route::patch('/carrinho/{event}', [CartController::class, 'update'])
+    ->name('cart.update');
+
 Route::delete('/carrinho/{event}', [CartController::class, 'remove'])
     ->name('cart.remove');
 
@@ -66,6 +69,11 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+Route::get('/checkout', [PaymentController::class, 'checkout'])
+    ->middleware('auth')
+    ->name('checkout');
+Route::post('/checkout', [PaymentController::class, 'processCheckout'])
+    ->middleware('auth')
+    ->name('checkout.process');
 Route::get('/pagamento-sucesso', [PaymentController::class, 'success'])->name('payment.success');
 Route::get('/pagamento-cancelado', [PaymentController::class, 'cancel'])->name('payment.cancel');

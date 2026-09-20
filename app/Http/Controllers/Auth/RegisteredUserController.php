@@ -19,11 +19,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-         $roles = Role::whereIn('name', ['organizador', 'participante'])
-        ->orderBy('name')
-        ->get();
-
-        return view('auth.register', compact('roles'));
+        return view('auth.register');
     }
 
     /**
@@ -37,16 +33,17 @@ class RegisteredUserController extends Controller
         'name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        'role_id' => ['required', 'exists:roles,id'],
     ]);
 
-    $participantRole = Role::where('name', 'Participante')->first();
+    $participantRole = Role::query()
+        ->whereRaw('lower(name) = ?', ['participante'])
+        ->firstOrFail();
 
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
         'password' => Hash::make($request->password),
-        'role_id' => $request->role_id,
+        'role_id' => $participantRole->id,
     ]);
 
     event(new Registered($user));

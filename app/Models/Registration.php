@@ -8,6 +8,14 @@ class Registration extends Model
 {
     protected $fillable = [
         'user_id',
+        'customer_name',
+        'address',
+        'postal_code',
+        'city',
+        'phone',
+        'delivery_method',
+        'shipping_cost',
+        'stripe_session_id',
         'event_id',
         'status',
         'ticket_token',
@@ -18,6 +26,7 @@ class Registration extends Model
     protected $casts = [
         'checked_in' => 'boolean',
         'checked_in_at' => 'datetime',
+        'shipping_cost' => 'decimal:2',
     ];
     
     public function user()
