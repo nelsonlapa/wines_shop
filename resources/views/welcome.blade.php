@@ -120,7 +120,7 @@
 
                     <p class="wine-kicker mb-2">Notas da casa</p>
                     <h2 class="font-serif text-3xl mb-6 text-gray-900">
-                        Novidades na adega
+                        Populares
                     </h2>
 
                     <div class="space-y-4">

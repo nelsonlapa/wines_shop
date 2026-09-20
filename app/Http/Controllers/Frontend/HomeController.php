@@ -13,6 +13,10 @@ class HomeController extends Controller
         $events = Event::where('status', 'active')
             ->where('visibility', 'public')
             ->with('category')
+            ->withCount([
+                'registrations as confirmed_sales_count' => fn ($query) => $query->where('status', 'confirmed'),
+            ])
+            ->orderByDesc('confirmed_sales_count')
             ->orderBy('date', 'asc')
             ->take(8)
             ->get();
