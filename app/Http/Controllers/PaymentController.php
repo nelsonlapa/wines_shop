@@ -34,7 +34,7 @@ class PaymentController extends Controller
         
         $ticketId = $request->input('ticket_id');
         
-        $finalPrice = $event->price; 
+        $finalPrice = $event->sale_price;
         $ticketName = 'Geral';
 
         if ($ticketId) {

@@ -20,7 +20,7 @@ class CartController extends Controller
 
         return view('cart.index', [
             'products' => $products,
-            'total' => $products->sum(fn (Event $product) => $product->price ?: 12.50),
+            'total' => $products->sum(fn (Event $product) => $product->sale_price),
         ]);
     }
 

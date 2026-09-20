@@ -52,8 +52,11 @@
                             {{ $event->city ?? 'Portugal' }}
                         </p>
 
-                        <p class="font-bold text-[#5b1820] mb-4">
-                            {{ $event->price == 0 ? '€ 12,50' : '€ ' . number_format($event->price, 2, ',', '.') }} <span class="font-normal text-xs text-stone-500">/ garrafa</span>
+                        <p class="font-bold text-[#5b1820] mb-4 flex flex-wrap items-center gap-2">
+                            @if($event->discount_percentage > 0)<span class="text-sm text-stone-400 price-old">{{ number_format($event->price ?: 12.50, 2, ',', '.') }} €</span>@endif
+                            <span>{{ number_format($event->sale_price, 2, ',', '.') }} €</span>
+                            @if($event->discount_percentage > 0)<span class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full">-{{ rtrim(rtrim(number_format($event->discount_percentage, 2, ',', '.'), '0'), ',') }}%</span>@endif
+                            <span class="font-normal text-xs text-stone-500">/ garrafa</span>
                         </p>
 
                         <a href="{{ route('events.show', $event) }}"
@@ -143,7 +146,7 @@
                                     </p>
 
                                     <p class="text-sm font-bold text-[#5b1820]">
-                                        € {{ $event->price == 0 ? '12,50' : number_format($event->price, 2, ',', '.') }}
+                                        {{ $event->price == 0 ? '12,50' : number_format($event->price, 2, ',', '.') }} €
                                     </p>
 
                                 </div>

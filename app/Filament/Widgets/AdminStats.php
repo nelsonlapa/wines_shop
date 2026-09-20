@@ -26,7 +26,7 @@ class AdminStats extends StatsOverviewWidget
             ->with('event')
             ->get()
             ->sum(function ($registration) {
-                return $registration->event?->price ?? 0;
+                return $registration->event?->sale_price ?? 0;
             });
 
         return [

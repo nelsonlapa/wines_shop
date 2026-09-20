@@ -8,10 +8,18 @@ class Event extends Model
 {
     protected $fillable = [
         'title',
+        'producer',
+        'country',
+        'wine_region',
+        'winemaker',
+        'alcohol_percentage',
+        'bottle_capacity',
+        'grapes',
         'description',
         'date',
         'city',
         'price',
+        'discount_percentage',
         'capacity',
         'status',
         'organizer_id',
@@ -28,6 +36,8 @@ class Event extends Model
     ];
 protected $casts = [
     'date' => 'datetime',
+    'alcohol_percentage' => 'decimal:1',
+    'discount_percentage' => 'decimal:2',
      'latitude' => 'float',
     'longitude' => 'float',
 ];
@@ -41,6 +51,13 @@ protected $casts = [
         return $this->belongsTo(Category::class);
     }
 
+    public function getSalePriceAttribute(): float
+    {
+        $basePrice = $this->price ?: 12.50;
+
+        return round($basePrice * (1 - (($this->discount_percentage ?? 0) / 100)), 2);
+    }
+
     public function registrations()
     {
         return $this->hasMany(Registration::class);
@@ -49,6 +66,10 @@ protected $casts = [
     protected static function booted()
 {
     static::creating(function ($event) {
+        if (empty($event->date)) {
+            $event->date = now();
+        }
+
         if ($event->visibility === 'private' && empty($event->private_token)) {
             $event->private_token = Str::uuid()->toString();
         }

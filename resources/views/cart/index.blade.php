@@ -26,7 +26,10 @@
                         <div class="flex-1">
                             <p class="wine-kicker mb-1">{{ $product->category->name ?? 'Vinho português' }}</p>
                             <h2 class="font-serif text-xl text-stone-900">{{ $product->title }}</h2>
-                            <p class="text-sm text-[#5b1820] font-bold mt-2">€ {{ number_format($product->price ?: 12.50, 2, ',', '.') }}</p>
+                            <p class="text-sm text-[#5b1820] font-bold mt-2">
+                                @if($product->discount_percentage > 0)<span class="text-stone-400 price-old mr-1">{{ number_format($product->price ?: 12.50, 2, ',', '.') }} €</span>@endif
+                                {{ number_format($product->sale_price, 2, ',', '.') }} €
+                            </p>
                         </div>
                         <form action="{{ route('cart.remove', $product) }}" method="POST">
                             @csrf
@@ -38,7 +41,7 @@
             </div>
             <aside class="bg-white border border-stone-200 p-6">
                 <h2 class="font-serif text-2xl mb-6">Resumo</h2>
-                <div class="flex justify-between border-b border-stone-200 pb-4 mb-5 text-stone-600"><span>{{ $products->count() }} artigo(s)</span><span>€ {{ number_format($total, 2, ',', '.') }}</span></div>
+                <div class="flex justify-between border-b border-stone-200 pb-4 mb-5 text-stone-600"><span>{{ $products->count() }} artigo(s)</span><span>{{ number_format($total, 2, ',', '.') }} €</span></div>
                 @if ($products->count() === 1)
                     <a href="{{ route('checkout', ['event_id' => $products->first()->id]) }}" class="wine-button block rounded-lg py-3 text-center font-semibold">Finalizar compra</a>
                 @else

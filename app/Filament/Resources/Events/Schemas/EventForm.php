@@ -2,15 +2,12 @@
 
 namespace App\Filament\Resources\Events\Schemas;
 
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\FileUpload;
-use Fahiem\FilamentPinpoint\Pinpoint;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Repeater;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
@@ -30,12 +27,45 @@ class EventForm
                 ->icon('heroicon-o-document-text')
                 ->schema([
 
-                    Section::make('Informações do Evento')
+                    Section::make('Informações do produto')
                         ->schema([
 
                             TextInput::make('title')
                                 ->label('Nome do vinho')
                                 ->required(),
+
+                            TextInput::make('producer')
+                                ->label('Produtor')
+                                ->placeholder('Ex.: Symington Family Estates')
+                                ->required(),
+
+                            TextInput::make('country')
+                                ->label('País')
+                                ->default('Portugal')
+                                ->required(),
+
+                            TextInput::make('wine_region')
+                                ->label('Região')
+                                ->placeholder('Ex.: Douro'),
+
+                            TextInput::make('winemaker')
+                                ->label('Enólogo')
+                                ->placeholder('Ex.: Charles Symington'),
+
+                            TextInput::make('alcohol_percentage')
+                                ->label('Teor de álcool (%)')
+                                ->numeric()
+                                ->step(0.1)
+                                ->suffix('%'),
+
+                            TextInput::make('bottle_capacity')
+                                ->label('Capacidade')
+                                ->placeholder('Ex.: 0.75 L'),
+
+                            Textarea::make('grapes')
+                                ->label('Castas')
+                                ->placeholder('Ex.: Touriga Nacional, Touriga Franca, Sousão')
+                                ->columnSpanFull(),
 
                             FileUpload::make('image')
                                 ->label('Imagem do produto')
@@ -45,36 +75,19 @@ class EventForm
                                 ->imagePreviewHeight('200'),
 
                             Textarea::make('description')
-                                ->label('Descrição e notas de prova')
+                                ->label('Descrição')
                                 ->required()
                                 ->columnSpanFull(),
 
-                            DateTimePicker::make('date')
-                                ->label('Data de entrada no catálogo')
-                                ->required(),
+                            Hidden::make('date'),
 
                             Select::make('category_id')
                                 ->label('Categoria')
                                 ->relationship('category', 'name')
                                 ->required(),
 
-                            auth()->user()?->isAdmin()
-
-                                ? Select::make('organizer_id')
-                                    ->label('Organizador')
-                                    ->relationship(
-                                        'organizer',
-                                        'name',
-                                        fn ($query) => $query->whereHas('role', function ($q) {
-                                            $q->where('name', 'Organizador');
-                                        })
-                                    )
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-
-                                : Hidden::make('organizer_id')
-                                    ->default(auth()->id()),
+                            Hidden::make('organizer_id')
+                                ->default(fn () => auth()->id()),
 
                         ])
                         ->columns(2),
@@ -82,45 +95,12 @@ class EventForm
                 ]),
 
             // TAB 2
-            Tab::make('Origem e localização')
-                ->icon('heroicon-o-map-pin')
-                ->schema([
-
-                    Section::make('Origem, produtor e entrega')
-                        ->schema([
-
-                            Pinpoint::make('map')
-                                ->label('Região de origem')
-                                ->defaultLocation(41.1579, -8.6291)
-                                ->defaultZoom(15)
-                                ->height(500)
-                                ->draggable()
-                                ->searchable()
-                                ->latField('latitude')
-                                ->lngField('longitude')
-                                ->addressField('address')
-                                ->cityField('city'),
-
-                            Hidden::make('address'),
-                            Hidden::make('city'),
-                            Hidden::make('latitude'),
-                            Hidden::make('longitude'),
-
-                        ]),
-
-                ]),
-
-            // TAB 3
             Tab::make('Preço e stock')
                 ->icon('heroicon-o-shopping-bag')
                 ->schema([
 
                     Section::make('Configuração')
                         ->schema([
-
-                            Toggle::make('has_seats')
-                                ->label('Produto com variantes/lotes?')
-                                ->live(),
 
                             TextInput::make('capacity')
                                 ->label('Stock total')
@@ -133,76 +113,20 @@ class EventForm
                                 ->default(0)
                                 ->prefix('€'),
 
-                            TextInput::make('rows')
-                                ->label('Número de lotes')
+                            TextInput::make('discount_percentage')
+                                ->label('Desconto')
                                 ->numeric()
-                                ->visible(fn ($get) => $get('has_seats')),
-
-                            TextInput::make('seats_per_row')
-                                ->label('Unidades por lote')
-                                ->numeric()
-                                ->visible(fn ($get) => $get('has_seats')),
+                                ->default(0)
+                                ->minValue(0)
+                                ->maxValue(100)
+                                ->suffix('%'),
 
                         ])
                         ->columns(2),
 
-                    Section::make('Formatos e preços')
-                        ->schema([
-
-                            Repeater::make('ticketTypes')
-                                ->relationship()
-                                ->schema([
-
-                                    TextInput::make('name')
-                                        ->label('Formato / lote')
-                                        ->required(),
-
-                                    TextInput::make('price')
-                                        ->numeric()
-                                        ->required()
-                                        ->prefix('€'),
-
-                                    TextInput::make('quantity')
-                                        ->label('Stock disponível')
-                                        ->numeric()
-                                        ->required(),
-
-                                ])
-                                ->columns(3)
-                                ->visible(fn ($get) => !$get('has_seats')),
-
-                        ]),
-
                 ]),
 
-            // TAB 4
-            Tab::make('Produtor')
-                ->icon('heroicon-o-building-storefront')
-                ->schema([
-
-                    Section::make('Produtor / quinta')
-                        ->schema([
-
-                            Repeater::make('eventArtists')
-                                ->relationship()
-                                ->schema([
-
-                                    Select::make('artist_id')
-                                        ->relationship('artist', 'name')
-                                        ->searchable()
-                                        ->required(),
-
-                                    Toggle::make('is_headliner')
-                                        ->label('Produtor principal'),
-
-                                ])
-                                ->columns(2),
-
-                        ]),
-
-                ]),
-
-            // TAB 5
+            // TAB 3
             Tab::make('Galeria do produto')
                 ->icon('heroicon-o-photo')
                 ->schema([
@@ -226,32 +150,7 @@ class EventForm
 
                 ]),
 
-            // TAB 6
-            Tab::make('Equipa da loja')
-                ->icon('heroicon-o-users')
-                ->schema([
-
-                    Section::make('Equipa responsável')
-                        ->schema([
-
-                            Select::make('staff')
-                                ->label('Membros da equipa')
-                                ->multiple()
-                                ->relationship(
-                                    'staff',
-                                    'name',
-                                    fn ($query) => $query->whereHas('role', function ($q) {
-                                        $q->where('name', 'Staff');
-                                    })
-                                )
-                                ->searchable()
-                                ->preload(),
-
-                        ]),
-
-                ]),
-
-            // TAB 7
+            // TAB 4
             Tab::make('Estado')
                 ->icon('heroicon-o-cog-6-tooth')
                 ->schema([

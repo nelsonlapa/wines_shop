@@ -25,6 +25,7 @@ body.wine-site {
 .wine-button { background: var(--wine); color: white; }
 .wine-button:hover { background: #771f2a; }
 .wine-kicker { color: var(--gold); letter-spacing: .18em; text-transform: uppercase; font-size: .7rem; font-weight: 700; }
+.price-old { text-decoration-line: line-through; text-decoration-thickness: 2px; text-decoration-color: currentColor; }
 
 /* Chrome, Edge, Safari */
 html::-webkit-scrollbar {

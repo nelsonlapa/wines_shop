@@ -46,7 +46,7 @@ class EventsTable
     }),
                 TextColumn::make('status')
                     ->badge(),
-                TextColumn::make('organizer.name')
+                TextColumn::make('producer')
     ->label('Produtor')
     ->searchable()
     ->sortable(),
