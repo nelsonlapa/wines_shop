@@ -36,21 +36,25 @@ body.wine-site textarea::placeholder {
 }
 
 html.dark body.wine-site {
-    --cream: #21181a;
-    --ink: #f4e9dc;
-    background: #21181a;
-    color: #f4e9dc;
+    --cream: #292929;
+    --ink: #f4f4f4;
+    background: #292929;
+    color: #f4f4f4;
 }
 
-html.dark body.wine-site main,
+html.dark body.wine-site main {
+    background-color: #292929;
+}
+
 html.dark body.wine-site .bg-white {
-    background-color: #2d2224;
+    background-color: #3d3d3d;
 }
 
 html.dark body.wine-site .text-stone-900,
 html.dark body.wine-site .text-gray-900,
-html.dark body.wine-site .text-gray-800 {
-    color: #f4e9dc;
+html.dark body.wine-site .text-gray-800,
+html.dark body.wine-site .text-stone-800 {
+    color: #fafafa;
 }
 
 html.dark body.wine-site .text-stone-700,
@@ -58,8 +62,9 @@ html.dark body.wine-site .text-stone-600,
 html.dark body.wine-site .text-stone-500,
 html.dark body.wine-site .text-gray-700,
 html.dark body.wine-site .text-gray-600,
-html.dark body.wine-site .text-gray-500 {
-    color: #cdbeb2;
+html.dark body.wine-site .text-gray-500,
+html.dark body.wine-site .text-stone-400 {
+    color: #d0d0d0;
 }
 
 html.dark body.auth-shell .text-stone-900,
@@ -79,30 +84,45 @@ html.dark body.wine-site .border-stone-200,
 html.dark body.wine-site .border-stone-300,
 html.dark body.wine-site .border-gray-200,
 html.dark body.wine-site .border-gray-300 {
-    border-color: #4a3839;
+    border-color: #555555;
 }
 
 html.dark body.wine-site input,
 html.dark body.wine-site select,
 html.dark body.wine-site textarea {
     color-scheme: dark;
-    background-color: #463336 !important;
-    color: #fff8f0 !important;
-    -webkit-text-fill-color: #fff8f0;
+    background-color: #4a4a4a !important;
+    color: #fafafa !important;
+    -webkit-text-fill-color: #fafafa;
     caret-color: #f4c978;
-    border-color: #5a4445;
+    border-color: #686868;
 }
 
 html.dark body.wine-site input::placeholder,
 html.dark body.wine-site textarea::placeholder {
-    color: #d7c8bd;
+    color: #d0d0d0;
     opacity: 1;
 }
 
 html.dark body.wine-site .bg-gray-50,
 html.dark body.wine-site .bg-gray-100,
 html.dark body.wine-site .bg-stone-100 {
-    background-color: #382a2c;
+    background-color: #474747;
+}
+
+html.dark body.wine-site .bg-emerald-50 {
+    background-color: #263d34;
+    color: #c8f1dc;
+}
+
+html.dark body.wine-site .bg-red-50 {
+    background-color: #492c2b;
+    color: #ffd7d2;
+}
+
+html.dark body.wine-site .bg-amber-50 {
+    background-color: #4a3b25;
+    color: #ffe2a3;
 }
 
 html.dark body.wine-site .theme-toggle .dark\:hidden {
@@ -120,6 +140,41 @@ html.dark body.wine-site .theme-toggle .dark\:inline {
 .wine-button { background: var(--wine); color: white; }
 .wine-button:hover { background: #771f2a; }
 .account-cta { color: #261d1b !important; }
+.purchase-accent { color: #5b1820; }
+html.dark body.wine-site .purchase-accent { color: #ffffff !important; }
+
+html.dark body.wine-site .text-\[\#5b1820\],
+html.dark body.wine-site .text-\[\#771f2a\],
+html.dark body.wine-site .text-red-600,
+html.dark body.wine-site .text-red-700,
+html.dark body.wine-site .text-red-800,
+html.dark body.wine-site .text-green-500,
+html.dark body.wine-site .text-green-600,
+html.dark body.wine-site .text-green-700,
+html.dark body.wine-site .text-green-800,
+html.dark body.wine-site .text-yellow-500,
+html.dark body.wine-site .text-yellow-700,
+html.dark body.wine-site .text-blue-600,
+html.dark body.wine-site .text-purple-600 {
+    color: #ffffff !important;
+}
+
+html.dark body.wine-site .hover\:text-\[\#771f2a\]:hover,
+html.dark body.wine-site .hover\:text-\[\#5b1820\]:hover,
+html.dark body.wine-site .hover\:text-red-700:hover,
+html.dark body.wine-site .hover\:text-blue-700:hover {
+    color: #ffffff !important;
+}
+
+html.dark body.wine-site .purchase-status.bg-green-100 {
+    background-color: #166534 !important;
+    color: #ffffff !important;
+}
+
+html.dark body.wine-site .purchase-status.bg-yellow-100 {
+    background-color: #854d0e !important;
+    color: #ffffff !important;
+}
 .wine-kicker { color: var(--gold); letter-spacing: .18em; text-transform: uppercase; font-size: .7rem; font-weight: 700; }
 .price-old { text-decoration-line: line-through; text-decoration-thickness: 2px; text-decoration-color: currentColor; }
 

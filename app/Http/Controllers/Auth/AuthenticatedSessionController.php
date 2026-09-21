@@ -30,15 +30,18 @@ class AuthenticatedSessionController extends Controller
 
     $user = Auth::user();
 
-    // Se for Admin ou Organizador → painel
-    if ($user->role?->name === 'Admin' ||
-        $user->role?->name === 'Organizador') {
+    $role = strtolower((string) $user->role?->name);
+    $intendedUrl = $request->session()->pull('url.intended');
 
-        return redirect()->intended('/welldone');
+    if (in_array($role, ['admin', 'organizador'], true)) {
+        return redirect()->to($intendedUrl ?: '/welldone');
     }
 
-    // Caso contrário (Participante) → homepage
-    return redirect()->intended(route('home'));
+    if ($intendedUrl && !preg_match('#/(welldone|dashboard|checkin)(?:/|$)#', parse_url($intendedUrl, PHP_URL_PATH) ?: '')) {
+        return redirect()->to($intendedUrl);
+    }
+
+    return redirect()->route('home');
 }
 
     /**

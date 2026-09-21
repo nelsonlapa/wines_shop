@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>Aroma Nobre | Vinhos com origem</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         (() => {
             const theme = localStorage.getItem('aroma-theme');

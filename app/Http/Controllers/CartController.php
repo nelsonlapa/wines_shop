@@ -30,8 +30,12 @@ class CartController extends Controller
     {
         abort_unless($event->status === 'active' && $event->visibility === 'public', 404);
 
+        if ($event->available_stock < 1) {
+            return redirect()->route('cart.index')->with('error', 'Este produto está esgotado.');
+        }
+
         $cart = $this->cartContents();
-        $cart[$event->id] = ($cart[$event->id] ?? 0) + 1;
+        $cart[$event->id] = min(($cart[$event->id] ?? 0) + 1, $event->available_stock);
 
         session(['cart' => $cart]);
 
@@ -55,7 +59,7 @@ class CartController extends Controller
         if ($quantity < 1) {
             unset($cart[$event->id]);
         } else {
-            $cart[$event->id] = min($quantity, 99);
+            $cart[$event->id] = min($quantity, $event->available_stock);
         }
 
         session(['cart' => $cart]);

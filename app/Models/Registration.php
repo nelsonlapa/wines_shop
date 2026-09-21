@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Registration extends Model
 {
     protected $fillable = [
+        'order_reference',
+        'order_id',
         'user_id',
         'customer_name',
         'address',
@@ -32,6 +34,11 @@ class Registration extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 
     public function event()

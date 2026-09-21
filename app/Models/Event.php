@@ -63,6 +63,25 @@ protected $casts = [
         return $this->hasMany(Registration::class);
     }
 
+    public function getSoldStockAttribute(): int
+    {
+        return (int) $this->registrations()
+            ->where('status', 'confirmed')
+            ->count();
+    }
+
+    public function getAvailableStockAttribute(): int
+    {
+        return max(0, (int) $this->capacity - $this->sold_stock);
+    }
+
+    public function getStockLabelAttribute(): string
+    {
+        return $this->available_stock === 0
+            ? 'Esgotado'
+            : ($this->available_stock <= 5 ? 'Últimas unidades' : 'Disponível');
+    }
+
     protected static function booted()
 {
     static::creating(function ($event) {

@@ -13,7 +13,7 @@
             <div class="h-10 w-px bg-gray-200 hidden lg:block"></div>
 
             <div class="hidden lg:flex items-center gap-7 text-white/85 text-sm font-medium">
-                <a href="{{ route('catalog.index') }}" class="hover:text-amber-200 transition">Catálogo</a>
+                <a href="{{ route('catalog.index') }}" class="text-base font-semibold hover:text-amber-200 transition">Catálogo</a>
             </div>
 
             <div class="h-10 w-px bg-gray-200 hidden xl:block"></div>

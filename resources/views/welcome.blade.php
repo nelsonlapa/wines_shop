@@ -21,7 +21,7 @@
 @section('content')
     <section class="relative z-20 -mt-12">
         <div class="flex items-end justify-between mb-7">
-            <div><p class="wine-kicker mb-2">A seleção da semana</p><h2 class="font-serif text-4xl text-stone-900">Garrafas em destaque</h2></div>
+            <div><p class="wine-kicker mb-2">A seleção da semana</p><h2 class="font-serif text-4xl text-stone-900">Destaques</h2></div>
             <a href="{{ route('events.index') }}" class="hidden sm:block text-sm font-semibold text-[#5b1820]">Ver toda a coleção <span aria-hidden="true">→</span></a>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

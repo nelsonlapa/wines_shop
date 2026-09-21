@@ -32,6 +32,8 @@
                 {!! nl2br(e($event->description)) !!}
             </div>
 
+            <p class="text-sm font-semibold mb-6 {{ $event->available_stock === 0 ? 'text-red-600' : ($event->available_stock <= 5 ? 'text-amber-700' : 'text-emerald-700') }}">{{ $event->stock_label }}</p>
+
             <section class="border-y border-stone-200 py-6 mb-8">
                 <p class="wine-kicker mb-4">Ficha técnica</p>
                 <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-sm">
@@ -64,7 +66,9 @@
                 <div><p class="wine-kicker mb-1">Entrega</p><p>2 a 4 dias</p></div>
             </div>
 
-            @if($event->price == 0)
+            @if($event->available_stock === 0)
+                <p class="w-full py-4 rounded-lg text-center font-semibold bg-stone-200 text-stone-500">Esgotado</p>
+            @elseif($event->price == 0)
                 <form action="{{ route('events.register', $event) }}" method="POST">
                     @csrf
                     <input type="hidden" name="seat_id" value="{{ $event->seats()->where('status', 'available')->value('id') }}">

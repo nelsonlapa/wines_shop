@@ -24,9 +24,9 @@ class RegistrationResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
     protected static string|UnitEnum|null $navigationGroup = 'Gestão';
     protected static ?string $recordTitleAttribute = 'id';
-    protected static ?string $navigationLabel = 'Vendas';
-    protected static ?string $modelLabel = 'Venda';
-    protected static ?string $pluralModelLabel = 'Vendas';
+    protected static ?string $navigationLabel = 'Linhas de venda';
+    protected static ?string $modelLabel = 'Linha de venda';
+    protected static ?string $pluralModelLabel = 'Linhas de venda';
 
     public static function form(Schema $schema): Schema
     {

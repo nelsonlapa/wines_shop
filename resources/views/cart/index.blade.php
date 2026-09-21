@@ -10,6 +10,9 @@
     @if (session('success'))
         <div class="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 px-5 py-4 text-emerald-800">{{ session('success') }}</div>
     @endif
+    @if (session('error'))
+        <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-5 py-4 text-red-800">{{ session('error') }}</div>
+    @endif
 
     @if ($products->isEmpty())
         <div class="bg-white border border-stone-200 p-12 text-center">
@@ -36,6 +39,7 @@
                                 <label for="quantity-{{ $product->id }}" class="text-xs text-stone-500">Quantidade</label>
                                 <input id="quantity-{{ $product->id }}" type="number" name="quantity" min="1" max="99" value="{{ $quantities[$product->id] }}" onchange="this.form.submit()" class="w-20 rounded border-stone-300 px-2 py-1 text-sm">
                             </form>
+                            <p class="text-xs text-stone-500 mt-2">{{ $product->available_stock }} disponível(eis)</p>
                         </div>
                         <form action="{{ route('cart.remove', $product) }}" method="POST">
                             @csrf

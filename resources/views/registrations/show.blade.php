@@ -1,46 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+    $first = $registrations->first();
+    $productsTotal = $registrations->sum(fn ($item) => $item->event->sale_price);
+    $shippingCost = $first->order?->shipping_cost ?? $first->shipping_cost ?? 0;
+@endphp
+<div class="max-w-3xl mx-auto py-8">
+    <div class="bg-white border border-stone-200 p-8">
+        <p class="wine-kicker mb-2">Recibo de compra</p>
+        <h1 class="font-serif text-4xl text-stone-900 mb-2">Compra confirmada</h1>
+        <p class="text-stone-500 mb-8">Referência {{ $first->order?->order_reference ?? $first->order_reference ?? 'AN-' . $first->id }} · {{ $first->order?->created_at?->format('d/m/Y H:i') ?? $first->created_at->format('d/m/Y H:i') }}</p>
 
-<div class="max-w-3xl mx-auto bg-white shadow-lg rounded-xl p-8 text-center">
-
-    <h1 class="text-3xl font-bold text-green-600 mb-4">
-        Encomenda confirmada
-    </h1>
-
-    <p class="text-gray-600 mb-6">
-        A sua encomenda foi realizada com sucesso.
-    </p>
-
-    <h2 class="text-xl font-bold mb-2">
-        {{ $registration->event->title }}
-    </h2>
-
-    <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 text-left max-w-xl mx-auto">
-        <div class="flex justify-between gap-4 border-b border-gray-200 pb-4 mb-4">
-            <span class="text-sm text-gray-500">Referência #{{ $registration->id }}</span>
-            <span class="text-sm text-gray-500">{{ $registration->created_at->format('d/m/Y H:i') }}</span>
+        <div class="space-y-4 border-y border-stone-200 py-5">
+            @foreach($registrations->groupBy('event_id') as $items)
+                @php($product = $items->first()->event)
+                <div class="flex justify-between gap-4">
+                    <div><p class="font-semibold text-stone-800">{{ $product->title }}</p><p class="text-sm text-stone-500">{{ $items->count() }} garrafa(s)</p></div>
+                    <p class="font-semibold text-[#5b1820] whitespace-nowrap">{{ number_format($product->sale_price * $items->count(), 2, ',', '.') }} €</p>
+                </div>
+            @endforeach
         </div>
-        <div class="flex justify-between gap-4">
-            <span class="font-semibold text-gray-800">{{ $registration->event->title }}</span>
-            <span class="font-semibold text-[#5b1820]">{{ number_format($registration->event->sale_price, 2, ',', '.') }} €</span>
-        </div>
-        @if($registration->event->discount_percentage > 0)
-            <p class="text-sm text-emerald-700 mt-3">Desconto aplicado: {{ rtrim(rtrim(number_format($registration->event->discount_percentage, 2, ',', '.'), '0'), ',') }}%</p>
-        @endif
-        <div class="flex justify-between border-t border-gray-200 mt-4 pt-4 font-bold text-gray-800">
-            <span>Total pago</span>
-            <span>{{ number_format($registration->event->sale_price, 2, ',', '.') }} €</span>
+        <div class="space-y-2 mt-5 text-stone-600">
+            <div class="flex justify-between"><span>Produtos</span><span>{{ number_format($productsTotal, 2, ',', '.') }} €</span></div>
+            <div class="flex justify-between"><span>Envio</span><span>{{ $shippingCost ? number_format($shippingCost, 2, ',', '.') . ' €' : 'Grátis' }}</span></div>
+            <div class="flex justify-between border-t border-stone-200 pt-4 text-lg font-bold text-stone-900"><span>Total pago</span><span>{{ number_format($productsTotal + $shippingCost, 2, ',', '.') }} €</span></div>
         </div>
     </div>
-
-    <div class="mt-8">
-        <a href="{{ route('registrations.my') }}"
-           class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
-            Ver as minhas compras
-        </a>
-    </div>
-
+    <a href="{{ route('registrations.my') }}" class="inline-block mt-6 text-sm font-semibold text-[#5b1820]">← Voltar às minhas compras</a>
 </div>
-
 @endsection

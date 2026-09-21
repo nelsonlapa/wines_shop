@@ -22,9 +22,9 @@
         <div class="flex justify-between gap-4 border-b border-gray-200 pb-4 mb-4">
             <div>
                 <p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Recibo de compra</p>
-                <p class="text-sm text-gray-700 mt-1">Referências: {{ $registrations->pluck('id')->map(fn ($id) => '#' . $id)->join(', ') }}</p>
+                <p class="text-sm text-gray-700 mt-1">Referência da compra: {{ $registrations->first()->order_reference ?? 'AN-' . $registrations->first()->id }}</p>
             </div>
-            <p class="text-sm text-gray-500">{{ $registration->created_at->format('d/m/Y H:i') }}</p>
+            <p class="text-sm text-gray-500">{{ $registrations->first()->created_at->format('d/m/Y H:i') }}</p>
         </div>
         @foreach($registrations->groupBy('event_id') as $productRegistrations)
             @php($product = $productRegistrations->first()->event)

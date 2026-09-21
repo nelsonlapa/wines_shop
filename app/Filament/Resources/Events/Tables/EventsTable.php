@@ -32,18 +32,11 @@ class EventsTable
                     ->label('Preço')
                     ->money()
                     ->sortable(),
-                TextColumn::make('capacity')
-    ->label('Stock')
-    ->formatStateUsing(function ($record) {
-        $count = $record->registrations()->count();
-        return $count . ' / ' . $record->capacity;
-    })
+                TextColumn::make('available_stock')
+    ->label('Stock disponível')
+    ->formatStateUsing(fn ($record) => $record->available_stock . ' / ' . $record->capacity)
     ->badge()
-    ->color(function ($record) {
-        return $record->registrations()->count() >= $record->capacity
-            ? 'danger'
-            : 'success';
-    }),
+    ->color(fn ($record) => $record->available_stock === 0 ? 'danger' : ($record->available_stock <= 5 ? 'warning' : 'success')),
                 TextColumn::make('status')
                     ->badge(),
                 TextColumn::make('producer')

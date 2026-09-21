@@ -31,6 +31,7 @@
                     <p class="wine-kicker mb-2">{{ $event->category->name ?? 'Vinho português' }}</p>
                     <h2 class="font-serif text-2xl text-stone-900 mb-1">{{ $event->title }}</h2>
                     <p class="text-sm text-stone-500 mb-4">{{ $event->city ?? 'Portugal' }} · Colheita selecionada</p>
+                    <p class="text-xs font-semibold mb-3 {{ $event->available_stock === 0 ? 'text-red-600' : ($event->available_stock <= 5 ? 'text-amber-700' : 'text-emerald-700') }}">{{ $event->stock_label }}</p>
                     <div class="flex items-center justify-between gap-3">
                         <p class="text-lg font-bold text-[#5b1820]">
                             @if($event->discount_percentage > 0)<span class="text-sm text-stone-400 price-old mr-1">{{ number_format($event->price ?: 12.50, 2, ',', '.') }} €</span>@endif

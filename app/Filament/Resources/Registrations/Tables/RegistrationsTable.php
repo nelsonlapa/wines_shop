@@ -15,6 +15,10 @@ class RegistrationsTable
     {
         return $table
             ->columns([
+                TextColumn::make('order.order_reference')
+                    ->label('Encomenda')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('user.name')
                     ->label('Utilizador')
                     ->searchable()

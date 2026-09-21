@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use App\Models\Registration;
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketPurchased;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -18,6 +20,12 @@ class PaymentController extends Controller
     {
         [$products, $quantities, $subtotal] = $this->cartSummary();
         abort_if($products->isEmpty(), 400, 'O carrinho está vazio.');
+
+        foreach ($products as $product) {
+            if ($quantities[$product->id] > $product->available_stock) {
+                return redirect()->route('cart.index')->with('error', "Stock insuficiente para {$product->title}.");
+            }
+        }
 
         return view('payment.checkout', [
             'products' => $products,
@@ -37,14 +45,32 @@ class PaymentController extends Controller
             'address' => ['required_if:delivery_method,delivery', 'nullable', 'string', 'max:255'],
             'postal_code' => ['required_if:delivery_method,delivery', 'nullable', 'string', 'max:30'],
             'city' => ['required_if:delivery_method,delivery', 'nullable', 'string', 'max:120'],
+            'country_code' => ['required', 'regex:/^\+?\d{1,4}$/'],
             'phone' => ['required', 'string', 'max:40'],
             'delivery_method' => ['required', 'in:delivery,pickup'],
         ]);
 
         [$products, $quantities, $subtotal] = $this->cartSummary();
         abort_if($products->isEmpty(), 400, 'O carrinho está vazio.');
+        foreach ($products as $product) {
+            if ($quantities[$product->id] > $product->available_stock) {
+                return redirect()->route('cart.index')->with('error', "Stock insuficiente para {$product->title}.");
+            }
+        }
         $shippingCost = $this->shippingCost($subtotal, $validated['delivery_method']);
+        $validated['order_reference'] = 'AN-' . strtoupper(Str::random(8));
+        $countryCode = '+' . ltrim($validated['country_code'], '+');
+        $validated['phone'] = $countryCode . ' ' . preg_replace('/\s+/', ' ', trim($validated['phone']));
+        unset($validated['country_code']);
         $validated['shipping_cost'] = $shippingCost;
+        $validated['subtotal'] = $subtotal;
+        $validated['total'] = $subtotal + $shippingCost;
+        $validated['number'] = $validated['order_reference'];
+        $validated['shipping_name'] = $validated['customer_name'];
+        $validated['shipping_address'] = $validated['address'] ?? '';
+        $validated['shipping_city'] = $validated['city'] ?? '';
+        $validated['shipping_postcode'] = $validated['postal_code'] ?? '';
+        $validated['shipping_country'] = 'PT';
         if ($validated['delivery_method'] === 'pickup') {
             $validated['address'] = null;
             $validated['postal_code'] = null;
@@ -127,7 +153,7 @@ class PaymentController extends Controller
 
     private function shippingCost(float $subtotal, string $deliveryMethod): float
     {
-        if ($deliveryMethod === 'pickup' || $subtotal >= 75) {
+        if ($deliveryMethod === 'pickup') {
             return 0;
         }
 
@@ -143,31 +169,11 @@ class PaymentController extends Controller
             
             $purchaseItems = json_decode($session->metadata->purchase_items ?? '[]', true);
             $checkoutDetails = json_decode($session->metadata->checkout_details ?? '{}', true);
-            $registrations = collect();
-            $createdRegistration = false;
-
-            foreach ($purchaseItems as $item) {
-                $registration = Registration::firstOrCreate(
-                    ['ticket_token' => $item['ticket_token']],
-                    [
-                        'user_id' => $session->metadata->user_id,
-                        'event_id' => $item['event_id'],
-                        'status' => 'confirmed',
-                        'checked_in' => false,
-                        ...$checkoutDetails,
-                        'stripe_session_id' => $session->id,
-                    ],
-                );
-                $createdRegistration = $createdRegistration || $registration->wasRecentlyCreated;
-                $registrations->push($registration->load('event', 'user'));
-            }
+            $order = Order::where('stripe_session_id', $session->id)->first();
+            $registrations = Registration::where('stripe_session_id', $session->id)->with('event', 'user', 'order')->get();
 
             if ($registrations->isEmpty()) {
-                throw new \RuntimeException('Não foi possível identificar os produtos desta compra.');
-            }
-
-            if ($createdRegistration) {
-                Mail::to($registrations->first()->user->email)->send(new TicketPurchased($registrations->first()));
+                return view('payment.pending', ['reference' => $checkoutDetails['order_reference'] ?? 'A confirmar']);
             }
 
             session()->forget('cart');
